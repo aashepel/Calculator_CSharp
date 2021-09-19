@@ -252,10 +252,6 @@ namespace Calculator
 
         private void button_negative_Click(object sender, EventArgs e)
         {
-            if (_displayCurrentNumber_readOnly)
-            {
-                return;
-            }
             if (_calculatorLogic.CurrentNumber.Length == 0)
             {
                 CurrentNumberChange("-");
