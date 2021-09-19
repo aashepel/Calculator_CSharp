@@ -156,6 +156,7 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
+                        OperandPerformed = false;
                         break;
                     case Operands.Substract:
                         resultOpertion = DSecondNumber - DCurrentNumber;
@@ -165,6 +166,7 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
+                        OperandPerformed = false;
                         break;
                     case Operands.Div:
                         if (DCurrentNumber == 0)
@@ -188,6 +190,7 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
+                        OperandPerformed = false;
                         break;
                     case Operands.Sqrt:
                         resultOpertion = Math.Sqrt(DCurrentNumber);
@@ -200,6 +203,7 @@ namespace Calculator
                             throw new CalculatorNegativeRootException();
                         }
                         Result = DoubleToString(resultOpertion);
+                        OperandPerformed = false;
                         break;
                     default:
                         return "";
