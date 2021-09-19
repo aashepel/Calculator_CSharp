@@ -103,6 +103,10 @@ namespace Calculator
             {
                 MessageBox.Show("Деление на ноль невозможно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch (Exceptions.CalculatorDoubleInfinityException)
+            {
+                MessageBox.Show("Невозможно выполнить операцию из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void CurrentNumberChange(string value)
         {
@@ -232,6 +236,10 @@ namespace Calculator
             {
                 MessageBox.Show("Деление на ноль невозможно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            catch (Exceptions.CalculatorDoubleInfinityException)
+            {
+                MessageBox.Show("Невозможно выполнить операцию из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             if (result != "")
             {
                 display_secondNumber.Text = _calculatorLogic.CompilationResutString();
@@ -280,6 +288,10 @@ namespace Calculator
             catch (Exceptions.CalculatorNegativeRootException)
             {
                 MessageBox.Show("Невозможно взять корень от отрицательного числа", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exceptions.CalculatorDoubleInfinityException)
+            {
+                MessageBox.Show("Невозможно взять корень из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

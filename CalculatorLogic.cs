@@ -30,7 +30,6 @@ namespace Calculator
         private string _secondNumber = "0";
         private string _result = "0";
         private bool _firstNullSym = false;
-        private static readonly Regex _numberRegex = new("^[-]?([0-9]+([,][0-9]+)?([0-9]+)?)?");
         public string Memory { get; set; }
         public bool MemoryIsSet { get; set; }
         public Operands CurrentOperand { get; set; }
@@ -95,7 +94,6 @@ namespace Calculator
         }
         public static bool IsValidNumber(string value)
         {
-            //return _numberRegex.IsMatch(value);
             return (value.Length == 0 || value.FirstOrDefault() == '-' || Double.TryParse(value, out _));
         }
         private static double DoubleParse(string value)
@@ -147,32 +145,41 @@ namespace Calculator
                 {
                     throw;
                 }
-
+                double resultOpertion = 0;
                 switch (CurrentOperand)
                 {
-                    case Operands.Addition:
-                        
-                        Result = DoubleToString(DSecondNumber + DCurrentNumber);
+                    case Operands.Addition:                        
+                        resultOpertion = DSecondNumber + DCurrentNumber;
+                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Substract:
-                        Result = DoubleToString(DSecondNumber - DCurrentNumber);
+                        resultOpertion = DSecondNumber - DCurrentNumber;
+                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Div:
                         if (DCurrentNumber == 0)
                         {
                             throw new CalculatorZeroDivideException();
                         }
-                        Result = DoubleToString(DSecondNumber / DCurrentNumber);
+                        resultOpertion = DSecondNumber / DCurrentNumber;
+                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Multiply:
-                        Result = DoubleToString(DSecondNumber * DCurrentNumber);
+                        resultOpertion = DSecondNumber * DCurrentNumber;
+                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Sqrt:
+                        resultOpertion = Math.Sqrt(DCurrentNumber);
+                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
                         if (DCurrentNumber < 0)
                         {
                             throw new CalculatorNegativeRootException();
                         }
-                        Result = DoubleToString(Math.Sqrt(DCurrentNumber));
+                        Result = DoubleToString(resultOpertion);
                         break;
                     default:
                         return "";
