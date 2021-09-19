@@ -230,7 +230,15 @@ namespace Calculator
             string result = "";
             try
             {
-                 result = _calculatorLogic.Calculate();
+                result = _calculatorLogic.Calculate();
+                if (result != "")
+                {
+                    display_secondNumber.Text = _calculatorLogic.CompilationResutString();
+                    _toolTip_DisplaySecondNumber.SetToolTip(display_secondNumber, display_secondNumber.Text);
+                    CurrentNumberChange(result);
+                    _calculatorLogic.OperandPerformed = false;
+                    _displayCurrentNumber_readOnly = true;
+                }
             }
             catch (Exceptions.CalculatorZeroDivideException)
             {
@@ -239,14 +247,6 @@ namespace Calculator
             catch (Exceptions.CalculatorDoubleInfinityException)
             {
                 MessageBox.Show("Невозможно выполнить операцию из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result != "")
-            {
-                display_secondNumber.Text = _calculatorLogic.CompilationResutString();
-                _toolTip_DisplaySecondNumber.SetToolTip(display_secondNumber, display_secondNumber.Text);
-                CurrentNumberChange(result);
-                _calculatorLogic.OperandPerformed = false;
-                _displayCurrentNumber_readOnly = true;
             }
         }
 

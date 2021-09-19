@@ -150,33 +150,55 @@ namespace Calculator
                 {
                     case Operands.Addition:                        
                         resultOpertion = DSecondNumber + DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        if (Double.IsInfinity(resultOpertion))
+                        {
+                            CurrentNumber = "";
+                            throw new CalculatorDoubleInfinityException();
+                        }
                         Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Substract:
                         resultOpertion = DSecondNumber - DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        if (Double.IsInfinity(resultOpertion))
+                        {
+                            CurrentNumber = "";
+                            throw new CalculatorDoubleInfinityException();
+                        }
                         Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Div:
                         if (DCurrentNumber == 0)
                         {
+                            CurrentNumber = "";
                             throw new CalculatorZeroDivideException();
                         }
                         resultOpertion = DSecondNumber / DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        if (Double.IsInfinity(resultOpertion))
+                        {
+                            CurrentNumber = "";
+                            throw new CalculatorDoubleInfinityException();
+                        }
                         Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Multiply:
                         resultOpertion = DSecondNumber * DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        if (Double.IsInfinity(resultOpertion))
+                        {
+                            CurrentNumber = "";
+                            throw new CalculatorDoubleInfinityException();
+                        }
                         Result = DoubleToString(resultOpertion);
                         break;
                     case Operands.Sqrt:
                         resultOpertion = Math.Sqrt(DCurrentNumber);
-                        if (Double.IsInfinity(resultOpertion)) throw new CalculatorDoubleInfinityException();
+                        if (Double.IsInfinity(resultOpertion))
+                        {
+                            CurrentNumber = "";
+                            throw new CalculatorDoubleInfinityException();
+                        }
                         if (DCurrentNumber < 0)
                         {
+                            CurrentNumber = "";
                             throw new CalculatorNegativeRootException();
                         }
                         Result = DoubleToString(resultOpertion);
