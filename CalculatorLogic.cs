@@ -148,7 +148,8 @@ namespace Calculator
                 double resultOpertion = 0;
                 switch (CurrentOperand)
                 {
-                    case Operands.Addition:                        
+                    case Operands.Addition:
+                        OperandPerformed = false;
                         resultOpertion = DSecondNumber + DCurrentNumber;
                         if (Double.IsInfinity(resultOpertion))
                         {
@@ -156,9 +157,9 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
-                        OperandPerformed = false;
                         break;
                     case Operands.Substract:
+                        OperandPerformed = false;
                         resultOpertion = DSecondNumber - DCurrentNumber;
                         if (Double.IsInfinity(resultOpertion))
                         {
@@ -166,9 +167,9 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
-                        OperandPerformed = false;
                         break;
                     case Operands.Div:
+                        OperandPerformed = false;
                         if (DCurrentNumber == 0)
                         {
                             CurrentNumber = "";
@@ -181,9 +182,9 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
-                        OperandPerformed = false;
                         break;
                     case Operands.Multiply:
+                        OperandPerformed = false;
                         resultOpertion = DSecondNumber * DCurrentNumber;
                         if (Double.IsInfinity(resultOpertion))
                         {
@@ -191,9 +192,9 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
-                        OperandPerformed = false;
                         break;
                     case Operands.Sqrt:
+                        OperandPerformed = false;
                         resultOpertion = Math.Sqrt(DCurrentNumber);
                         if (Double.IsInfinity(resultOpertion))
                         {
@@ -204,7 +205,6 @@ namespace Calculator
                             throw new CalculatorNegativeRootException();
                         }
                         Result = DoubleToString(resultOpertion);
-                        OperandPerformed = false;
                         break;
                     default:
                         return "";
