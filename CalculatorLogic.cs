@@ -193,12 +193,10 @@ namespace Calculator
                         resultOpertion = Math.Sqrt(DCurrentNumber);
                         if (Double.IsInfinity(resultOpertion))
                         {
-                            CurrentNumber = "";
                             throw new CalculatorDoubleInfinityException();
                         }
                         if (DCurrentNumber < 0)
                         {
-                            CurrentNumber = "";
                             throw new CalculatorNegativeRootException();
                         }
                         Result = DoubleToString(resultOpertion);
