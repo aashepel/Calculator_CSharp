@@ -181,6 +181,7 @@ namespace Calculator
                             throw new CalculatorDoubleInfinityException();
                         }
                         Result = DoubleToString(resultOpertion);
+                        OperandPerformed = false;
                         break;
                     case Operands.Multiply:
                         resultOpertion = DSecondNumber * DCurrentNumber;
