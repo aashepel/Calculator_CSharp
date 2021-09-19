@@ -181,10 +181,5 @@ namespace Calculator
             }
             return "";
         }
-
-        public void ExTest()
-        {
-            throw new CalculatorZeroDivideException("error");
-        }
     }
 }
