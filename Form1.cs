@@ -17,6 +17,7 @@ namespace Calculator
         private ToolTip _toolTip_DisplaySecondNumber = new ToolTip();
         private ToolTip _toolTip_DisplayFirstNumber = new ToolTip();
         private bool _displayCurrentNumber_readOnly = false;
+        private bool _abilityChangeOperand = false;
         private const byte _maxLengthCurrentNumber = 49;
         public Calculator()
         {
@@ -34,6 +35,7 @@ namespace Calculator
                 button_c_Click(null, null);
                 _displayCurrentNumber_readOnly = false;
             }
+            _abilityChangeOperand = true;
             if (_calculatorLogic.CurrentNumber.Length == 1)
             {
                 if (_calculatorLogic.CurrentNumber.First() == '0')
@@ -71,12 +73,13 @@ namespace Calculator
 
         private void OperandClickEvent(Operands operand)
         {
+            if (!_abilityChangeOperand) return;
             try
             {
                 if (_displayCurrentNumber_readOnly) _displayCurrentNumber_readOnly = false;
                 if (_calculatorLogic.OperandPerformed)
                 {
-                    if (_calculatorLogic.CurrentNumber.Length == 0)
+                    if (_abilityChangeOperand)
                     {
                         _calculatorLogic.CurrentOperand = operand;
                         display_secondNumber.Text = _calculatorLogic.SecondNumber + (char)_calculatorLogic.CurrentOperand;
@@ -91,7 +94,7 @@ namespace Calculator
                 }
                 else
                 {
-                    if (_calculatorLogic.CurrentNumber.Length == 0) return;
+                    if (String.IsNullOrEmpty(_calculatorLogic.CurrentNumber)) return;
                     _calculatorLogic.OperandPerformed = true;
                     _calculatorLogic.CurrentOperand = operand;
                     _calculatorLogic.SecondNumber = _calculatorLogic.CurrentNumber;
@@ -239,6 +242,7 @@ namespace Calculator
                     _calculatorLogic.OperandPerformed = false;
                     _displayCurrentNumber_readOnly = true;
                 }
+                _abilityChangeOperand = true;
             }
             catch (Exceptions.CalculatorZeroDivideException ex)
             {
