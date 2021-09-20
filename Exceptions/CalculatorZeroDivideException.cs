@@ -22,5 +22,10 @@ namespace Calculator.Exceptions
         {
 
         }
+
+        public override string Description
+        {
+            get { return "Деление на ноль невозможно"; }
+        }
     }
 }

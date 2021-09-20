@@ -23,45 +23,43 @@ namespace Calculator
     {
         public CalculatorLogic()
         {
-            MemoryIsSet = false;
-            Memory = "";
         }
         private string _currentNumber = "0";
         private string _secondNumber = "0";
-        private string _result = "0";
+        private string _result = null;
         private bool _firstNullSym = false;
-        public string Memory { get; set; }
-        public bool MemoryIsSet { get; set; }
-        public Operands CurrentOperand { get; set; }
+        private string _memory;
+        private bool _memoryIsSet = false;
+        private Operands _currentOperand;
+        public string Memory
+        {
+            get {  return _memory; }
+            set {  _memory = value; }
+        }
+        public bool MemoryIsSet
+        {
+            get {  return _memoryIsSet; }
+            set {  _memoryIsSet = value; }
+        }
+        public Operands CurrentOperand
+        {
+            get {  return _currentOperand; }
+            set {  _currentOperand = value; }
+        }
         public bool OperandPerformed { get; set; }
         public string Result 
         {
-            get 
-            {
-                return _result;
-            }
-            set
-            {
-                _result = value;
-            }
+            get { return _result; }
+            set { _result = value; }
         }
         public bool FirstNullSym
         {
-            get
-            {
-                return _firstNullSym;
-            }
-            set
-            {
-                _firstNullSym = value;
-            }
+            get {  return _firstNullSym; }
+            set {  _firstNullSym = value; }
         }
         public string CurrentNumber 
         {
-            get 
-            {
-                return _currentNumber;
-            }
+            get {  return _currentNumber; }
             set
             {
                 if (IsValidNumber(value))
@@ -72,10 +70,7 @@ namespace Calculator
         }
         public string SecondNumber
         {
-            get
-            {
-                return _secondNumber;
-            }
+            get {  return _secondNumber; }
             set
             {
                 if (IsValidNumber(value))
@@ -94,7 +89,7 @@ namespace Calculator
         }
         public static bool IsValidNumber(string value)
         {
-            return (value.Length == 0 || value.FirstOrDefault() == '-' || Double.TryParse(value, out _));
+            return (String.IsNullOrEmpty(value) || (value.FirstOrDefault() == '-' && value.Length == 1) || Double.TryParse(value, out _));
         }
         private static double DoubleParse(string value)
         {   
@@ -122,96 +117,108 @@ namespace Calculator
             ResultString += '=' + res;
             return ResultString;
         }
-        public string Calculate()
+        public string CalculateBinaryOperand()
         {
-            if ((OperandPerformed && SecondNumber.Length > 0) || CurrentOperand == Operands.Sqrt)
+            if (!OperandPerformed || SecondNumber.Length <= 0)
             {
-                if (CurrentNumber.Length == 0)
-                {
-                    CurrentNumber = SecondNumber;
-                }
-                double DSecondNumber = 0;
-                double DCurrentNumber = 0;
-
-                try
-                {
-                    if (CurrentOperand != Operands.Sqrt)
-                    {
-                        DSecondNumber = DoubleParse(SecondNumber);
-                    }
-                    DCurrentNumber = DoubleParse(CurrentNumber);
-                }
-                catch (FormatException ex)
-                {
-                    throw;
-                }
-                double resultOpertion = 0;
-                switch (CurrentOperand)
-                {
-                    case Operands.Addition:
-                        OperandPerformed = false;
-                        resultOpertion = DSecondNumber + DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion))
-                        {
-                            CurrentNumber = "";
-                            throw new CalculatorDoubleInfinityException();
-                        }
-                        Result = DoubleToString(resultOpertion);
-                        break;
-                    case Operands.Substract:
-                        OperandPerformed = false;
-                        resultOpertion = DSecondNumber - DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion))
-                        {
-                            CurrentNumber = "";
-                            throw new CalculatorDoubleInfinityException();
-                        }
-                        Result = DoubleToString(resultOpertion);
-                        break;
-                    case Operands.Div:
-                        OperandPerformed = false;
-                        if (DCurrentNumber == 0)
-                        {
-                            CurrentNumber = "";
-                            throw new CalculatorZeroDivideException();
-                        }
-                        resultOpertion = DSecondNumber / DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion))
-                        {
-                            CurrentNumber = "";
-                            throw new CalculatorDoubleInfinityException();
-                        }
-                        Result = DoubleToString(resultOpertion);
-                        break;
-                    case Operands.Multiply:
-                        OperandPerformed = false;
-                        resultOpertion = DSecondNumber * DCurrentNumber;
-                        if (Double.IsInfinity(resultOpertion))
-                        {
-                            CurrentNumber = "";
-                            throw new CalculatorDoubleInfinityException();
-                        }
-                        Result = DoubleToString(resultOpertion);
-                        break;
-                    case Operands.Sqrt:
-                        OperandPerformed = false;
-                        resultOpertion = Math.Sqrt(DCurrentNumber);
-                        if (Double.IsInfinity(resultOpertion))
-                        {
-                            throw new CalculatorDoubleInfinityException();
-                        }
-                        if (DCurrentNumber < 0)
-                        {
-                            throw new CalculatorNegativeRootException();
-                        }
-                        Result = DoubleToString(resultOpertion);
-                        break;
-                    default:
-                        return "";
-                }
-                return Result;
+                return null;
             }
-            return "";
+            if (String.IsNullOrEmpty(CurrentNumber))
+            {
+                CurrentNumber = SecondNumber;
+            }
+            double DSecondNumber = 0;
+            double DCurrentNumber = 0;
+
+            try
+            {
+                DSecondNumber = DoubleParse(SecondNumber);
+                DCurrentNumber = DoubleParse(CurrentNumber);
+            }
+            catch (FormatException ex)
+            {
+                
+            }
+            double resultOpertion = 0;
+            switch (CurrentOperand)
+            {
+                case Operands.Addition:
+                    resultOpertion = DSecondNumber + DCurrentNumber;
+                    if (Double.IsInfinity(resultOpertion))
+                    {
+                        CurrentNumber = "";
+                        throw new CalculatorDoubleInfinityException();
+                    }
+                    break;
+                case Operands.Substract:
+                    resultOpertion = DSecondNumber - DCurrentNumber;
+                    if (Double.IsInfinity(resultOpertion))
+                    {
+                        CurrentNumber = "";
+                        throw new CalculatorDoubleInfinityException();
+                    }
+                    break;
+                case Operands.Div:
+                    if (DCurrentNumber == 0)
+                    {
+                        CurrentNumber = "";
+                        throw new CalculatorZeroDivideException();
+                    }
+                    resultOpertion = DSecondNumber / DCurrentNumber;
+                    if (Double.IsInfinity(resultOpertion))
+                    {
+                        CurrentNumber = "";
+                        throw new CalculatorDoubleInfinityException();
+                    }
+                    break;
+                case Operands.Multiply:
+                    resultOpertion = DSecondNumber * DCurrentNumber;
+                    if (Double.IsInfinity(resultOpertion))
+                    {
+                        CurrentNumber = "";
+                        throw new CalculatorDoubleInfinityException();
+                    }
+                    break;
+                default:
+                    return null;
+            }
+            Result = DoubleToString(resultOpertion);
+            OperandPerformed = false;
+            return Result;
+        }
+        public string CalculateUnaryOperand()
+        {
+            if (CurrentNumber.Length == 0) return null;
+            double resultOperation;
+            double DCurrentNumber = 0;
+            try
+            {
+                DCurrentNumber = Double.Parse(CurrentNumber);
+            }
+            catch (FormatException ex)
+            {
+
+            }
+            switch (CurrentOperand)
+            {           
+                case Operands.Sqrt:
+                    resultOperation = Math.Sqrt(DCurrentNumber);
+                    if (Double.IsInfinity(resultOperation))
+                    {
+                        throw new CalculatorDoubleInfinityException();
+                    }
+                    if (DCurrentNumber < 0)
+                    {
+                        throw new CalculatorNegativeRootException();
+                    }
+                    Result = DoubleToString(resultOperation);
+                    break;
+                default:
+                    return null;
+            }
+            OperandPerformed = false;
+            Result = DoubleToString(resultOperation);
+            return Result;
         }
     }
 }

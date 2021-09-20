@@ -83,7 +83,7 @@ namespace Calculator
                     }
                     else
                     {
-                        _calculatorLogic.Calculate();
+                        _calculatorLogic.CalculateBinaryOperand();
                         _calculatorLogic.CurrentOperand = operand;
                         _calculatorLogic.SecondNumber = _calculatorLogic.Result;
                         display_secondNumber.Text = _calculatorLogic.Result + (char)operand;
@@ -97,15 +97,15 @@ namespace Calculator
                     _calculatorLogic.SecondNumber = _calculatorLogic.CurrentNumber;
                     display_secondNumber.Text = _calculatorLogic.CurrentNumber + (char)operand;
                 }
-                CurrentNumberChange("");
+                CurrentNumberChange("0");
             }
-            catch (Exceptions.CalculatorZeroDivideException)
+            catch (Exceptions.CalculatorZeroDivideException ex)
             {
-                MessageBox.Show("Деление на ноль невозможно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (Exceptions.CalculatorDoubleInfinityException)
+            catch (Exceptions.CalculatorDoubleInfinityException ex)
             {
-                MessageBox.Show("Невозможно выполнить операцию из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void CurrentNumberChange(string value)
@@ -230,7 +230,7 @@ namespace Calculator
             string result = "";
             try
             {
-                result = _calculatorLogic.Calculate();
+                result = _calculatorLogic.CalculateBinaryOperand();
                 if (result != "")
                 {
                     display_secondNumber.Text = _calculatorLogic.CompilationResutString();
@@ -240,23 +240,19 @@ namespace Calculator
                     _displayCurrentNumber_readOnly = true;
                 }
             }
-            catch (Exceptions.CalculatorZeroDivideException)
+            catch (Exceptions.CalculatorZeroDivideException ex)
             {
-                MessageBox.Show("Деление на ноль невозможно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (Exceptions.CalculatorDoubleInfinityException)
+            catch (Exceptions.CalculatorDoubleInfinityException ex)
             {
-                MessageBox.Show("Невозможно выполнить операцию из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void button_negative_Click(object sender, EventArgs e)
         {
-            if (_calculatorLogic.CurrentNumber.Length == 0)
-            {
-                CurrentNumberChange("-");
-                return;
-            }
+            if (_calculatorLogic.CurrentNumber == "0" || _calculatorLogic.CurrentNumber.Length == 0) return;
             if (_calculatorLogic.CurrentNumber.First() == '-')
             {
                 CurrentNumberChange(_calculatorLogic.CurrentNumber.Remove(0, 1));
@@ -271,23 +267,19 @@ namespace Calculator
         {
             try
             {
-                if (_calculatorLogic.CurrentNumber.Length <= 0)
-                {
-                    return;
-                }
                 _calculatorLogic.OperandPerformed = true;
                 _calculatorLogic.CurrentOperand = Operands.Sqrt;
-                display_secondNumber.Text = (char)Operands.Sqrt + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.Calculate()}";
+                display_secondNumber.Text = (char)Operands.Sqrt + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
                 CurrentNumberChange(_calculatorLogic.Result);
                 _displayCurrentNumber_readOnly = true;
             }
-            catch (Exceptions.CalculatorNegativeRootException)
+            catch (Exceptions.CalculatorNegativeRootException ex)
             {
-                MessageBox.Show("Невозможно взять корень от отрицательного числа", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (Exceptions.CalculatorDoubleInfinityException)
+            catch (Exceptions.CalculatorDoubleInfinityException ex)
             {
-                MessageBox.Show("Невозможно взять корень из-за переполнения", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

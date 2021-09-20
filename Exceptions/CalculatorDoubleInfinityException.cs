@@ -8,5 +8,9 @@ namespace Calculator.Exceptions
 {
     class CalculatorDoubleInfinityException : CalculatorBaseException
     {
+        public override string Description
+        {
+            get { return "Невозможно выполнить операцию из-за переполнения"; }
+        }
     }
 }

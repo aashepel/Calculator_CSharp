@@ -22,5 +22,13 @@ namespace Calculator.Exceptions
         {
 
         }
+
+        public virtual string Description
+        {
+            get
+            {
+                return "";
+            }
+        }
     }
 }
