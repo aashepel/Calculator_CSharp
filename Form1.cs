@@ -15,8 +15,6 @@ namespace Calculator
     public partial class Calculator : Form
     {
         private CalculatorLogic _calculatorLogic = new CalculatorLogic();
-        private ToolTip _toolTip_DisplaySecondNumber = new ToolTip();
-        private ToolTip _toolTip_DisplayFirstNumber = new ToolTip();
         private bool _displayCurrentNumber_readOnly = false;
         private bool _abilityChangeOperand = false;
         private const byte _maxLengthCurrentNumber = 49;
@@ -120,6 +118,7 @@ namespace Calculator
                 display_secondNumber.Text = (char)operand + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
                 CurrentNumberChange(_calculatorLogic.Result);
                 _displayCurrentNumber_readOnly = true;
+                _calculatorLogic.CurrentNumberIsSet = true;
             }
             catch (CalculatorBaseException ex)
             {
@@ -130,13 +129,11 @@ namespace Calculator
         {
             _calculatorLogic.CurrentNumber = value;
             display_currentNumber.Text = _calculatorLogic.CurrentNumber;
-            _toolTip_DisplayFirstNumber.SetToolTip(display_currentNumber, value);
         }
         private void SecondNumberChange(string value)
         {
             display_secondNumber.Text = value;
             _calculatorLogic.SecondNumber = value;
-            _toolTip_DisplaySecondNumber.SetToolTip(display_secondNumber, value);
         }
 
         private void button_0_Click(object sender, EventArgs e)
@@ -247,14 +244,14 @@ namespace Calculator
 
         private void button_eq_Click(object sender, EventArgs e)
         {
-            string result = "";
+            if (!_calculatorLogic.OperandPerformed) return;
+            string result;
             try
             {
                 result = _calculatorLogic.CalculateBinaryOperand();
                 if (result != "")
                 {
                     display_secondNumber.Text = _calculatorLogic.CompilationResutString();
-                    _toolTip_DisplaySecondNumber.SetToolTip(display_secondNumber, display_secondNumber.Text);
                     CurrentNumberChange(result);
                     _calculatorLogic.OperandPerformed = false;
                     _displayCurrentNumber_readOnly = true;

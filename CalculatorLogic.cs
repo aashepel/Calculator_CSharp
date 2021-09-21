@@ -88,11 +88,15 @@ namespace Calculator
         }
         public string Del_CurrentNumber()
         {
-            if (CurrentNumber.Length > 0)
+            if (_currentNumber.Length == 1)
             {
-                CurrentNumber.Remove(CurrentNumber.Length - 1, 1);
+                return "0";
             }
-            return CurrentNumber;
+            else if (_currentNumber.Length > 1)
+            {
+                 _currentNumber = _currentNumber.Remove(_currentNumber.Length - 1, 1);
+            }
+            return _currentNumber;
         }
         public static bool IsValidNumber(string value)
         {
