@@ -135,6 +135,26 @@ namespace Calculator
             {
                 value = value.Remove(value.Length - 1, 1);
             }
+            if (value.First() == '-')
+            {
+                bool compilanceCondition = false;
+                for (int i = 1; i < value.Length; i++)
+                {
+                    if (value[i] == '0' || value[i] == ',')
+                    {
+
+                    }
+                    else
+                    {
+                        compilanceCondition = true;
+                        break;
+                    }
+                }
+                if (compilanceCondition == false)
+                {
+                    value = "0";
+                }
+            }
             return value;
         }
         private void CheckCalculateBinaryOperandException(double value)
