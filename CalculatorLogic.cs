@@ -129,6 +129,14 @@ namespace Calculator
             ResultString += '=';
             return ResultString;
         }
+        public static string NormalizeNumber(string value)
+        {
+            if (value.Last() == ',')
+            {
+                value = value.Remove(value.Length - 1, 1);
+            }
+            return value;
+        }
         private void CheckCalculateBinaryOperandException(double value)
         {
             if (Double.IsInfinity(value))

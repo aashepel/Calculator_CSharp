@@ -71,6 +71,7 @@ namespace Calculator
                     }
                     else
                     {
+                        CurrentNumberChange(CalculatorLogic.NormalizeNumber(_calculatorLogic.CurrentNumber));
                         _calculatorLogic.CalculateBinaryOperand();
                         _calculatorLogic.CurrentOperand = operand;
                         _calculatorLogic.OperandPerformed = true;
@@ -81,6 +82,7 @@ namespace Calculator
                 }
                 else
                 {
+                    CurrentNumberChange(CalculatorLogic.NormalizeNumber(_calculatorLogic.CurrentNumber));
                     if (String.IsNullOrEmpty(_calculatorLogic.CurrentNumber)) return;
                     _calculatorLogic.OperandPerformed = true;
                     _calculatorLogic.CurrentNumberIsSet = false;
@@ -234,6 +236,7 @@ namespace Calculator
             string result;
             try
             {
+                CurrentNumberChange(CalculatorLogic.NormalizeNumber(_calculatorLogic.CurrentNumber));
                 result = _calculatorLogic.CalculateBinaryOperand();
                 if (result != "")
                 {
