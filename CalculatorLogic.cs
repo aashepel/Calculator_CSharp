@@ -17,7 +17,8 @@ namespace Calculator
         Div = '/',
         Substract = '-',
         Sqrt = '√',
-        Square = 'p'
+        Square = 'p',
+        Squaring = '^'
     }
     internal class CalculatorLogic
     {
@@ -30,7 +31,13 @@ namespace Calculator
         private bool _firstNullSym = false;
         private string _memory;
         private bool _memoryIsSet = false;
+        private bool _currentNumberIsSet = false;
         private Operands _currentOperand;
+        public bool CurrentNumberIsSet
+        {
+            get { return _currentNumberIsSet; }
+            set { _currentNumberIsSet = value; }
+        }
         public string Memory
         {
             get {  return _memory; }
@@ -117,6 +124,14 @@ namespace Calculator
             ResultString += '=' + res;
             return ResultString;
         }
+        private void CheckCalculateBinaryOperandException(double value)
+        {
+            if (Double.IsInfinity(value))
+            {
+                CurrentNumber = "";
+                throw new CalculatorDoubleInfinityException();
+            }
+        }
         public string CalculateBinaryOperand()
         {
             if (!OperandPerformed || SecondNumber.Length <= 0)
@@ -135,28 +150,20 @@ namespace Calculator
                 DSecondNumber = DoubleParse(SecondNumber);
                 DCurrentNumber = DoubleParse(CurrentNumber);
             }
-            catch (FormatException ex)
+            catch
             {
-                
+                throw new CalculatorDoubleParseException();
             }
             double resultOpertion = 0;
             switch (CurrentOperand)
             {
                 case Operands.Addition:
                     resultOpertion = DSecondNumber + DCurrentNumber;
-                    if (Double.IsInfinity(resultOpertion))
-                    {
-                        CurrentNumber = "";
-                        throw new CalculatorDoubleInfinityException();
-                    }
+                    CheckCalculateBinaryOperandException(resultOpertion);
                     break;
                 case Operands.Substract:
                     resultOpertion = DSecondNumber - DCurrentNumber;
-                    if (Double.IsInfinity(resultOpertion))
-                    {
-                        CurrentNumber = "";
-                        throw new CalculatorDoubleInfinityException();
-                    }
+                    CheckCalculateBinaryOperandException(resultOpertion);
                     break;
                 case Operands.Div:
                     if (DCurrentNumber == 0)
@@ -165,19 +172,11 @@ namespace Calculator
                         throw new CalculatorZeroDivideException();
                     }
                     resultOpertion = DSecondNumber / DCurrentNumber;
-                    if (Double.IsInfinity(resultOpertion))
-                    {
-                        CurrentNumber = "";
-                        throw new CalculatorDoubleInfinityException();
-                    }
+                    CheckCalculateBinaryOperandException(resultOpertion);
                     break;
                 case Operands.Multiply:
                     resultOpertion = DSecondNumber * DCurrentNumber;
-                    if (Double.IsInfinity(resultOpertion))
-                    {
-                        CurrentNumber = "";
-                        throw new CalculatorDoubleInfinityException();
-                    }
+                    CheckCalculateBinaryOperandException(resultOpertion);
                     break;
                 default:
                     return null;
@@ -186,32 +185,39 @@ namespace Calculator
             OperandPerformed = false;
             return Result;
         }
+        private void CheckCalculateUnaryOperandException(double value)
+        {
+            if (Double.IsInfinity(value))
+            {
+                throw new CalculatorDoubleInfinityException();
+            }
+        }
         public string CalculateUnaryOperand()
         {
             if (CurrentNumber.Length == 0) return null;
             double resultOperation;
-            double DCurrentNumber = 0;
+            double DCurrentNumber;
             try
             {
                 DCurrentNumber = Double.Parse(CurrentNumber);
             }
-            catch (FormatException ex)
+            catch
             {
-
+                throw new CalculatorDoubleParseException();
             }
             switch (CurrentOperand)
             {           
                 case Operands.Sqrt:
                     resultOperation = Math.Sqrt(DCurrentNumber);
-                    if (Double.IsInfinity(resultOperation))
-                    {
-                        throw new CalculatorDoubleInfinityException();
-                    }
+                    CheckCalculateUnaryOperandException(resultOperation);
                     if (DCurrentNumber < 0)
                     {
                         throw new CalculatorNegativeRootException();
                     }
-                    Result = DoubleToString(resultOperation);
+                    break;
+                case Operands.Squaring:
+                    resultOperation = Math.Pow(DCurrentNumber, 2);
+                    CheckCalculateUnaryOperandException(resultOperation);
                     break;
                 default:
                     return null;

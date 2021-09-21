@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Numerics;
+using Calculator.Exceptions;
 
 namespace Calculator
 {
@@ -36,6 +37,7 @@ namespace Calculator
                 _displayCurrentNumber_readOnly = false;
             }
             _abilityChangeOperand = true;
+            _calculatorLogic.CurrentNumberIsSet = true;
             if (_calculatorLogic.CurrentNumber.Length == 1)
             {
                 if (_calculatorLogic.CurrentNumber.First() == '0')
@@ -71,7 +73,7 @@ namespace Calculator
             }
         }
 
-        private void OperandClickEvent(Operands operand)
+        private void OperandBinaryClickEvent(Operands operand)
         {
             if (!_abilityChangeOperand) return;
             try
@@ -79,7 +81,7 @@ namespace Calculator
                 if (_displayCurrentNumber_readOnly) _displayCurrentNumber_readOnly = false;
                 if (_calculatorLogic.OperandPerformed)
                 {
-                    if (_abilityChangeOperand)
+                    if (!_calculatorLogic.CurrentNumberIsSet)
                     {
                         _calculatorLogic.CurrentOperand = operand;
                         display_secondNumber.Text = _calculatorLogic.SecondNumber + (char)_calculatorLogic.CurrentOperand;
@@ -90,23 +92,36 @@ namespace Calculator
                         _calculatorLogic.CurrentOperand = operand;
                         _calculatorLogic.SecondNumber = _calculatorLogic.Result;
                         display_secondNumber.Text = _calculatorLogic.Result + (char)operand;
+                        _calculatorLogic.CurrentNumberIsSet = false;
                     }
                 }
                 else
                 {
                     if (String.IsNullOrEmpty(_calculatorLogic.CurrentNumber)) return;
                     _calculatorLogic.OperandPerformed = true;
+                    _calculatorLogic.CurrentNumberIsSet = false;
                     _calculatorLogic.CurrentOperand = operand;
                     _calculatorLogic.SecondNumber = _calculatorLogic.CurrentNumber;
                     display_secondNumber.Text = _calculatorLogic.CurrentNumber + (char)operand;
                 }
                 CurrentNumberChange("0");
             }
-            catch (Exceptions.CalculatorZeroDivideException ex)
+            catch (CalculatorBaseException ex)
             {
                 MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            catch (Exceptions.CalculatorDoubleInfinityException ex)
+        }
+        private void OperandUnaryClickEvent(Operands operand)
+        {
+            try
+            {
+                _calculatorLogic.OperandPerformed = true;
+                _calculatorLogic.CurrentOperand = operand;
+                display_secondNumber.Text = (char)operand + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
+                CurrentNumberChange(_calculatorLogic.Result);
+                _displayCurrentNumber_readOnly = true;
+            }
+            catch (CalculatorBaseException ex)
             {
                 MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -176,7 +191,8 @@ namespace Calculator
 
         private void button_c_Click(object sender, EventArgs e)
         {
-            CurrentNumberChange("");
+            _calculatorLogic.CurrentNumberIsSet = false;
+            CurrentNumberChange("0");
             SecondNumberChange("");
             _calculatorLogic.OperandPerformed = false;
             _displayCurrentNumber_readOnly = false;
@@ -192,27 +208,28 @@ namespace Calculator
 
         private void button_plus_Click(object sender, EventArgs e)
         {
-            OperandClickEvent(Operands.Addition);
+            OperandBinaryClickEvent(Operands.Addition);
         }
 
         private void button_substraction_Click(object sender, EventArgs e)
         {
-            OperandClickEvent(Operands.Substract);
+            OperandBinaryClickEvent(Operands.Substract);
         }
 
         private void button_mult_Click(object sender, EventArgs e)
         {
-            OperandClickEvent(Operands.Multiply);
+            OperandBinaryClickEvent(Operands.Multiply);
         }
 
         private void button_div_Click(object sender, EventArgs e)
         {
-            OperandClickEvent(Operands.Div);
+            OperandBinaryClickEvent(Operands.Div);
         }
 
         private void button_ce_Click(object sender, EventArgs e)
         {
-            CurrentNumberChange("");
+            _calculatorLogic.CurrentNumberIsSet = false;
+            CurrentNumberChange("0");
             if (_displayCurrentNumber_readOnly)
             {
                 SecondNumberChange("");
@@ -244,11 +261,7 @@ namespace Calculator
                 }
                 _abilityChangeOperand = true;
             }
-            catch (Exceptions.CalculatorZeroDivideException ex)
-            {
-                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exceptions.CalculatorDoubleInfinityException ex)
+            catch (CalculatorBaseException ex)
             {
                 MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -269,22 +282,7 @@ namespace Calculator
 
         private void button_sqrt_Click(object sender, EventArgs e)
         {
-            try
-            {
-                _calculatorLogic.OperandPerformed = true;
-                _calculatorLogic.CurrentOperand = Operands.Sqrt;
-                display_secondNumber.Text = (char)Operands.Sqrt + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
-                CurrentNumberChange(_calculatorLogic.Result);
-                _displayCurrentNumber_readOnly = true;
-            }
-            catch (Exceptions.CalculatorNegativeRootException ex)
-            {
-                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exceptions.CalculatorDoubleInfinityException ex)
-            {
-                MessageBox.Show(ex.Description, "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            OperandUnaryClickEvent(Operands.Sqrt);
         }
 
         private void button_ms_Click(object sender, EventArgs e)
@@ -307,6 +305,11 @@ namespace Calculator
             {
                 CurrentNumberChange(_calculatorLogic.Memory);
             }
+        }
+
+        private void button_power_Click(object sender, EventArgs e)
+        {
+            OperandUnaryClickEvent(Operands.Squaring);
         }
     }
 }

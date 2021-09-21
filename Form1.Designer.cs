@@ -58,6 +58,7 @@ namespace Calculator
             this.display_secondNumber = new System.Windows.Forms.Label();
             this.memory_label = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button_power = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_7
@@ -251,9 +252,9 @@ namespace Calculator
             // button_div
             // 
             this.button_div.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button_div.Location = new System.Drawing.Point(215, 156);
+            this.button_div.Location = new System.Drawing.Point(147, 156);
             this.button_div.Name = "button_div";
-            this.button_div.Size = new System.Drawing.Size(62, 55);
+            this.button_div.Size = new System.Drawing.Size(130, 55);
             this.button_div.TabIndex = 18;
             this.button_div.Text = "/";
             this.button_div.UseVisualStyleBackColor = true;
@@ -262,7 +263,7 @@ namespace Calculator
             // button_sqrt
             // 
             this.button_sqrt.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button_sqrt.Location = new System.Drawing.Point(147, 156);
+            this.button_sqrt.Location = new System.Drawing.Point(284, 156);
             this.button_sqrt.Name = "button_sqrt";
             this.button_sqrt.Size = new System.Drawing.Size(62, 55);
             this.button_sqrt.TabIndex = 19;
@@ -356,12 +357,24 @@ namespace Calculator
             this.memory_label.TabIndex = 33;
             this.memory_label.Text = "Memory No Set";
             // 
+            // button_power
+            // 
+            this.button_power.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.button_power.Location = new System.Drawing.Point(283, 217);
+            this.button_power.Name = "button_power";
+            this.button_power.Size = new System.Drawing.Size(62, 55);
+            this.button_power.TabIndex = 34;
+            this.button_power.Text = "Squaring";
+            this.button_power.UseVisualStyleBackColor = true;
+            this.button_power.Click += new System.EventHandler(this.button_power_Click);
+            // 
             // Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(416, 480);
+            this.Controls.Add(this.button_power);
             this.Controls.Add(this.memory_label);
             this.Controls.Add(this.display_secondNumber);
             this.Controls.Add(this.button_ms);
@@ -427,6 +440,7 @@ namespace Calculator
         private System.Windows.Forms.Label display_secondNumber;
         private System.Windows.Forms.Label memory_label;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button button_power;
     }
 }
 

@@ -27,7 +27,7 @@ namespace Calculator.Exceptions
         {
             get
             {
-                return "";
+                return "Упс, что-то пошло не так";
             }
         }
     }
