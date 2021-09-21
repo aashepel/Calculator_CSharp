@@ -31,7 +31,8 @@ namespace Calculator
             }
             if (_displayCurrentNumber_readOnly)
             {
-                button_c_Click(null, null);
+                CurrentNumberChange("0");
+                SecondNumberChange("");
                 _displayCurrentNumber_readOnly = false;
             }
             _abilityChangeOperand = true;
@@ -82,12 +83,14 @@ namespace Calculator
                     if (!_calculatorLogic.CurrentNumberIsSet)
                     {
                         _calculatorLogic.CurrentOperand = operand;
+                        _calculatorLogic.OperandPerformed = true;
                         display_secondNumber.Text = _calculatorLogic.SecondNumber + (char)_calculatorLogic.CurrentOperand;
                     }
                     else
                     {
                         _calculatorLogic.CalculateBinaryOperand();
                         _calculatorLogic.CurrentOperand = operand;
+                        _calculatorLogic.OperandPerformed = true;
                         _calculatorLogic.SecondNumber = _calculatorLogic.Result;
                         display_secondNumber.Text = _calculatorLogic.Result + (char)operand;
                         _calculatorLogic.CurrentNumberIsSet = false;
@@ -301,6 +304,11 @@ namespace Calculator
             if (_calculatorLogic.MemoryIsSet)
             {
                 CurrentNumberChange(_calculatorLogic.Memory);
+                if (!_calculatorLogic.OperandPerformed)
+                {
+                    SecondNumberChange("");
+                }
+                _displayCurrentNumber_readOnly = true;
             }
         }
 

@@ -69,7 +69,11 @@ namespace Calculator
             get {  return _currentNumber; }
             set
             {
-                if (IsValidNumber(value))
+                if (value == "")
+                {
+                    _currentNumber = "0";
+                }
+                else if (IsValidNumber(value))
                 {
                     _currentNumber = value;
                 }
@@ -125,7 +129,7 @@ namespace Calculator
             {
                 ResultString += curNum;
             }
-            ResultString += '=' + res;
+            ResultString += '=';
             return ResultString;
         }
         private void CheckCalculateBinaryOperandException(double value)
