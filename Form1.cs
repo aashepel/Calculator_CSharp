@@ -21,6 +21,7 @@ namespace Calculator
         public Calculator()
         {
             InitializeComponent();
+            CurrentNumberChange("0");
         }
 
         private void NumberClickEvent(char num)
@@ -42,24 +43,6 @@ namespace Calculator
                 if (_calculatorLogic.CurrentNumber.First() == '0')
                 {
                     CurrentNumberChange(num.ToString());
-                }
-                else
-                {
-                    CurrentNumberChange(_calculatorLogic.CurrentNumber + num);
-                }
-            }
-            else if (_calculatorLogic.CurrentNumber.Length == 2)
-            {
-                if (_calculatorLogic.CurrentNumber.First() == '-')
-                {
-                    if (_calculatorLogic.CurrentNumber.ElementAt(1) == '0')
-                    {
-                        CurrentNumberChange(_calculatorLogic.CurrentNumber.Replace('0', num));
-                    }
-                    else
-                    {
-                        CurrentNumberChange(_calculatorLogic.CurrentNumber + num);
-                    }
                 }
                 else
                 {

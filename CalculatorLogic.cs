@@ -84,10 +84,7 @@ namespace Calculator
             get {  return _secondNumber; }
             set
             {
-                if (IsValidNumber(value))
-                {
-                    _secondNumber = value;
-                }
+                _secondNumber = value;
             }
         }
         public string Del_CurrentNumber()
