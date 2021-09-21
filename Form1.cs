@@ -33,7 +33,10 @@ namespace Calculator
             if (_displayCurrentNumber_readOnly)
             {
                 CurrentNumberChange("0");
-                SecondNumberChange("");
+                if (!_calculatorLogic.OperandPerformed)
+                {
+                    SecondNumberChange("");
+                }
                 _displayCurrentNumber_readOnly = false;
             }
             _abilityChangeOperand = true;
