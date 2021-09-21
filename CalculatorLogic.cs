@@ -214,7 +214,7 @@ namespace Calculator
                 case Operands.Sqrt:
                     resultOperation = Math.Sqrt(DCurrentNumber);
                     CheckCalculateUnaryOperandException(resultOperation);
-                    if (DCurrentNumber < 0)
+                    if (DCurrentNumber.CompareTo(0) < 0)
                     {
                         throw new CalculatorNegativeRootException();
                     }
