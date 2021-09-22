@@ -100,7 +100,15 @@ namespace Calculator
             {
                 _calculatorLogic.OperandPerformed = true;
                 _calculatorLogic.CurrentOperand = operand;
-                display_secondNumber.Text = (char)operand + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
+                _calculatorLogic.CalculateUnaryOperand();
+                if (operand == Operands.Squaring)
+                {
+                    display_secondNumber.Text = $"({_calculatorLogic.CurrentNumber})^2 = ";
+                }
+                else if (operand == Operands.Sqrt)
+                {
+                    display_secondNumber.Text = (char)operand + $"({_calculatorLogic.CurrentNumber}) = ";
+                }
                 CurrentNumberChange(_calculatorLogic.Result);
                 _calculatorLogic.DisplayCurrentNumber_readOnly = true;
                 _calculatorLogic.CurrentNumberIsSet = true;

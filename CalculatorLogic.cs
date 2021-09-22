@@ -17,7 +17,6 @@ namespace Calculator
         Div = '/',
         Substract = '-',
         Sqrt = '√',
-        Square = 'p',
         Squaring = '^'
     }
     internal class CalculatorLogic
