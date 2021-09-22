@@ -279,6 +279,7 @@ namespace Calculator
             this.button_delete.Size = new System.Drawing.Size(62, 55);
             this.button_delete.TabIndex = 22;
             this.button_delete.Text = "delete";
+            this.toolTip1.SetToolTip(this.button_delete, "Удаление последнего символа в строке ввода\r\n");
             this.button_delete.UseVisualStyleBackColor = true;
             this.button_delete.Click += new System.EventHandler(this.button_delete_Click);
             // 

@@ -15,9 +15,7 @@ namespace Calculator
     public partial class Calculator : Form
     {
         private CalculatorLogic _calculatorLogic = new CalculatorLogic();
-        private bool _displayCurrentNumber_readOnly = false;
-        private bool _abilityChangeOperand = false;
-        private const byte _maxLengthCurrentNumber = 49;
+
         public Calculator()
         {
             InitializeComponent();
@@ -26,20 +24,16 @@ namespace Calculator
 
         private void NumberClickEvent(char num)
         {
-            if (display_currentNumber.Text.Length >= _maxLengthCurrentNumber)
-            {
-                return;
-            }
-            if (_displayCurrentNumber_readOnly)
+            if (_calculatorLogic.DisplayCurrentNumber_readOnly)
             {
                 CurrentNumberChange("0");
                 if (!_calculatorLogic.OperandPerformed)
                 {
                     SecondNumberChange("");
                 }
-                _displayCurrentNumber_readOnly = false;
+                _calculatorLogic.DisplayCurrentNumber_readOnly = false;
             }
-            _abilityChangeOperand = true;
+            _calculatorLogic.AbilityChangeOperand = true;
             _calculatorLogic.CurrentNumberIsSet = true;
             if (_calculatorLogic.CurrentNumber.Length == 1)
             {
@@ -60,10 +54,10 @@ namespace Calculator
 
         private void OperandBinaryClickEvent(Operands operand)
         {
-            if (!_abilityChangeOperand) return;
+            if (!_calculatorLogic.AbilityChangeOperand) return;
             try
             {
-                if (_displayCurrentNumber_readOnly) _displayCurrentNumber_readOnly = false;
+                if (_calculatorLogic.DisplayCurrentNumber_readOnly) _calculatorLogic.DisplayCurrentNumber_readOnly = false;
                 if (_calculatorLogic.OperandPerformed)
                 {
                     if (!_calculatorLogic.CurrentNumberIsSet)
@@ -108,7 +102,7 @@ namespace Calculator
                 _calculatorLogic.CurrentOperand = operand;
                 display_secondNumber.Text = (char)operand + $"({_calculatorLogic.CurrentNumber}) = {_calculatorLogic.CalculateUnaryOperand()}";
                 CurrentNumberChange(_calculatorLogic.Result);
-                _displayCurrentNumber_readOnly = true;
+                _calculatorLogic.DisplayCurrentNumber_readOnly = true;
                 _calculatorLogic.CurrentNumberIsSet = true;
             }
             catch (CalculatorBaseException ex)
@@ -183,12 +177,12 @@ namespace Calculator
             CurrentNumberChange("0");
             SecondNumberChange("");
             _calculatorLogic.OperandPerformed = false;
-            _displayCurrentNumber_readOnly = false;
+            _calculatorLogic.DisplayCurrentNumber_readOnly = false;
         }
 
         private void button_delete_Click(object sender, EventArgs e)
         {
-            if (!_displayCurrentNumber_readOnly && _calculatorLogic.CurrentNumber.Length > 0)
+            if (!_calculatorLogic.DisplayCurrentNumber_readOnly && _calculatorLogic.CurrentNumber.Length > 0)
             {
                 CurrentNumberChange(_calculatorLogic.Del_CurrentNumber());
             }
@@ -218,16 +212,16 @@ namespace Calculator
         {
             _calculatorLogic.CurrentNumberIsSet = false;
             CurrentNumberChange("0");
-            if (_displayCurrentNumber_readOnly)
+            if (_calculatorLogic.DisplayCurrentNumber_readOnly)
             {
                 SecondNumberChange("");
-                _displayCurrentNumber_readOnly = false;
+                _calculatorLogic.DisplayCurrentNumber_readOnly = false;
             }
         }
 
         private void button_comma_Click(object sender, EventArgs e)
         {
-            if (!_displayCurrentNumber_readOnly)
+            if (!_calculatorLogic.DisplayCurrentNumber_readOnly)
             {
                 CurrentNumberChange(_calculatorLogic.CurrentNumber + ',');
             }
@@ -246,9 +240,9 @@ namespace Calculator
                     display_secondNumber.Text = _calculatorLogic.CompilationResutString();
                     CurrentNumberChange(result);
                     _calculatorLogic.OperandPerformed = false;
-                    _displayCurrentNumber_readOnly = true;
+                    _calculatorLogic.DisplayCurrentNumber_readOnly = true;
                 }
-                _abilityChangeOperand = true;
+                _calculatorLogic.AbilityChangeOperand = true;
             }
             catch (CalculatorBaseException ex)
             {
@@ -297,7 +291,7 @@ namespace Calculator
                 {
                     SecondNumberChange("");
                 }
-                _displayCurrentNumber_readOnly = true;
+                _calculatorLogic.DisplayCurrentNumber_readOnly = true;
             }
         }
 

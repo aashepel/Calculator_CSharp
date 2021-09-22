@@ -25,6 +25,9 @@ namespace Calculator
         public CalculatorLogic()
         {
         }
+        private const byte _maxLengthCurrentNumber = 49;
+        private bool _displayCurrentNumber_readOnly = false;
+        private bool _abilityChangeOperand = false;
         private string _currentNumber = "0";
         private string _secondNumber = "0";
         private string _result = null;
@@ -33,6 +36,17 @@ namespace Calculator
         private bool _memoryIsSet = false;
         private bool _currentNumberIsSet = false;
         private Operands _currentOperand;
+
+        public bool DisplayCurrentNumber_readOnly
+        {
+            get { return _displayCurrentNumber_readOnly; }
+            set { _displayCurrentNumber_readOnly = value; }
+        }
+        public bool AbilityChangeOperand
+        {
+            get { return _abilityChangeOperand; }
+            set { _abilityChangeOperand = value; }
+        }
         public bool CurrentNumberIsSet
         {
             get { return _currentNumberIsSet; }
@@ -69,6 +83,7 @@ namespace Calculator
             get {  return _currentNumber; }
             set
             {
+                if (value.Length > _maxLengthCurrentNumber) return;
                 if (value == "")
                 {
                     _currentNumber = "0";
