@@ -261,7 +261,7 @@ namespace Calculator
         private void button_negative_Click(object sender, EventArgs e)
         {
             if (_calculatorLogic.CurrentNumber == "0" || _calculatorLogic.CurrentNumber.Length == 0) return;
-            if (_calculatorLogic.DisplayCurrentNumber_readOnly && display_secondNumber.Text.Length == 0) 
+            if (_calculatorLogic.DisplayCurrentNumber_readOnly && display_secondNumber.Text.Length != 0) 
             {
                 display_secondNumber.Text = "";
             }
